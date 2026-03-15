@@ -85,19 +85,40 @@ ros2 launch linorobot2_gazebo gazebo.launch.py
 
 Gazebo should now launch with the robot simulation.
 
+## Launch Instructions
 
-
-
-------------------------
-#### LAUNCH INSTRUCTIONS
-
+### 1. Set Robot Base
+```bash
 export LINOROBOT2_BASE=x2
-''''
+```
+
+### 2. Set Gazebo Resource Paths
+```bash
 export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$HOME/ros_ws/src/packages/linorobot2/linorobot2_gazebo/models
 export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$HOME/ros_ws/install/linorobot2_description/share
-'''''
+```
+
+### 3. Launch Gazebo Simulation
+```bash
 ros2 launch linorobot2_gazebo gazebo.launch.py \
 world_name:=baylands_world \
 spawn_x:=205 \
 spawn_y:=155 \
 spawn_z:=2
+```
+
+### Run Everything at Once
+You can also run all commands together:
+
+```bash
+export LINOROBOT2_BASE=x2
+
+export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$HOME/ros_ws/src/packages/linorobot2/linorobot2_gazebo/models
+export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$HOME/ros_ws/install/linorobot2_description/share
+
+ros2 launch linorobot2_gazebo gazebo.launch.py \
+world_name:=baylands_world \
+spawn_x:=205 \
+spawn_y:=155 \
+spawn_z:=2
+```
