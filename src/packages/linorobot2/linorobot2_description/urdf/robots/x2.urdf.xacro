@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<robot name="x2" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<link name="base_link">
+  <inertial>
+    <mass value="16.5"/>
+    <origin xyz="0 0 0"/>
+    <inertia ixx="0.32" iyy="0.39" izz="0.45"
+             ixy="0" ixz="0" iyz="0"/>
+  </inertial>
+
+  <visual>
+    <geometry>
+      <mesh filename="package://linorobot2_description/meshes/x2/x2_chassis.dae"/>
+    </geometry>
+  </visual>
+
+  <collision>
+    <geometry>
+      <box size="0.42 0.31 0.18"/>
+    </geometry>
+  </collision>
+</link>
+
+<!-- Wheels -->
+
+<link name="front_left_wheel">
+  <visual>
+    <geometry>
+      <mesh filename="package://linorobot2_description/meshes/x2/x2_wheel_left.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="front_right_wheel">
+  <visual>
+    <geometry>
+      <mesh filename="package://linorobot2_description/meshes/x2/x2_wheel_right.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="rear_left_wheel">
+  <visual>
+    <geometry>
+      <mesh filename="package://linorobot2_description/meshes/x2/x2_wheel_left.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<link name="rear_right_wheel">
+  <visual>
+    <geometry>
+      <mesh filename="package://linorobot2_description/meshes/x2/x2_wheel_right.dae"/>
+    </geometry>
+  </visual>
+</link>
+
+<!-- Joints -->
+
+<joint name="front_left_wheel_joint" type="continuous">
+  <parent link="base_link"/>
+  <child link="front_left_wheel"/>
+  <origin xyz="0.131 0.1878 0.0345"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+<joint name="front_right_wheel_joint" type="continuous">
+  <parent link="base_link"/>
+  <child link="front_right_wheel"/>
+  <origin xyz="0.131 -0.1878 0.0345"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+<joint name="rear_left_wheel_joint" type="continuous">
+  <parent link="base_link"/>
+  <child link="rear_left_wheel"/>
+  <origin xyz="-0.131 0.1878 0.0345"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+<joint name="rear_right_wheel_joint" type="continuous">
+  <parent link="base_link"/>
+  <child link="rear_right_wheel"/>
+  <origin xyz="-0.131 -0.1878 0.0345"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+<!-- Gazebo Diff Drive -->
+
+<gazebo>
+  <plugin filename="gz-sim-diff-drive-system"
+          name="gz::sim::systems::DiffDrive">
+
+    <left_joint>front_left_wheel_joint</left_joint>
+    <left_joint>rear_left_wheel_joint</left_joint>
+
+    <right_joint>front_right_wheel_joint</right_joint>
+    <right_joint>rear_right_wheel_joint</right_joint>
+
+    <wheel_separation>0.37559</wheel_separation>
+    <wheel_radius>0.098</wheel_radius>
+
+    <topic>cmd_vel</topic>
+    <odom_topic>odom</odom_topic>
+
+  </plugin>
+</gazebo>
+
+</robot>

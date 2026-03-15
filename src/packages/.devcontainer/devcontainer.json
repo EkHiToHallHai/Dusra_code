@@ -1,0 +1,75 @@
+{
+  "name": "Devkit Dev Container",
+  "dockerComposeFile": ["../compose.yml", "../compose.override.yml"],
+  "service": "devcontainer",
+  "workspaceFolder": "/home/${localEnv:USER}/ros_ws",
+  "remoteUser": "${localEnv:USER}",
+
+  "mounts": [
+    "type=bind,source=${localEnv:HOME}/.ssh,target=${localEnv:HOME}/.ssh,readonly",
+    "type=bind,source=${localEnv:HOME}/.bash_history,target=/home/${localEnv:USER}/.bash_history"
+  ],
+
+  "shutdownAction": "stopCompose",
+
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/starship:1": {}
+  },
+
+  "postCreateCommand": "echo 'eval -- \"$(/usr/local/bin/starship init bash --print-full-init)\"' >> ~/.bashrc && echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc && echo 'source ~/ros_ws/install/setup.bash' >> ~/.bashrc && colcon clean workspace -y || true && colcon build --symlink-install || true",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+
+        "ms-vscode.cpptools-extension-pack",
+        "matepek.vscode-catch2-test-adapter",
+
+        "samubarb.vscode-doxyfile",
+        "cschlosser.doxdocgen",
+        "betwo.vscode-doxygen-runner",
+        "bbenoist.Doxygen",
+
+        "nvidia.nsight-vscode-edition",
+
+        "ms-python.python",
+        "ms-python.gather",
+        "076923.python-image-preview",
+        "ms-python.vscode-python-envs",
+        "ms-toolsai.jupyter",
+        "ms-python.autopep8",
+        "ms-toolsai.datawrangler",
+        "ms-vscode.vscode-copilot-data-analysis",
+        "njpwerner.autodocstring",
+
+        "redhat.vscode-xml",
+        "DotJoshJohnson.xml",
+
+        "Ranch-Hand-Robotics.rde-pack",
+
+        "eamodio.gitlens",
+
+        "esbenp.prettier-vscode",
+
+        "hbenl.vscode-test-explorer",
+        "ms-vscode.test-adapter-converter",
+
+        "oderwat.indent-rainbow",
+        "mechatroner.rainbow-csv",
+
+        "bierner.github-markdown-preview",
+
+        "ms-azuretools.vscode-containers",
+        "docker.docker",
+
+        "Gruntfuggly.todo-tree",
+        "streetsidesoftware.code-spell-checker",
+        "ms-vsliveshare.vsliveshare",
+        "aaron-bond.better-comments",
+        "ngtystr.ppm-pgm-viewer-for-vscode"
+      ]
+    }
+  }
+}

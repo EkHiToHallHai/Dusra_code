@@ -1,0 +1,10 @@
+services:
+  devcontainer:
+    build:
+      args:
+        USERNAME: ${USER}
+        USER_UID: ${UID}
+        USER_GID: ${GID}
+    user: "${UID}:${GID}"
+    volumes:
+      - .:/home/${USER}/ros_ws/src/packages/

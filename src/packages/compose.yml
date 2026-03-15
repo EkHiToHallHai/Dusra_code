@@ -1,0 +1,38 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_GID: "1000"
+        USER_UID: "1000"
+        USERNAME: uddipto
+
+    # remove this if it exists
+    # container_name: devcontainer
+
+    gpus: all
+
+    environment:
+      DISPLAY: ${DISPLAY}
+      QT_X11_NO_MITSHM: "1"
+      QT_QPA_PLATFORM: "xcb"
+      LIBGL_DRI3_DISABLE: "1"
+
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+
+      __GLX_VENDOR_LIBRARY_NAME: nvidia
+      __NV_PRIME_RENDER_OFFLOAD: "1"
+      __VK_LAYER_NV_optimus: "NVIDIA_only"
+    ipc: host
+    network_mode: host
+    privileged: true
+    stdin_open: true
+    tty: true
+    user: "1000:1000"
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /dev/dri:/dev/dri
+      - /home/uddipto/mmm_ws:/home/uddipto/ros_ws/src/packages
