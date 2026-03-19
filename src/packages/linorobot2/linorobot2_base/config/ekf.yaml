@@ -7,23 +7,39 @@ ekf_filter_node:
         map_frame: map             
         odom_frame: odom            
         base_link_frame: base_footprint 
-        world_frame: odom 
+        world_frame: odom
 
         #x     , y     , z,
         #roll  , pitch , yaw,
         #vx    , vy    , vz,
         #vroll , vpitch, vyaw,
         #ax    , ay    , az
-        odom0: odom/unfiltered
-        odom0_config: [false, false, false,
+        odom0: odometry/gps
+        odom0_config: [true,  true,  false,
                        false, false, false,
-                       true, true, false,
-                       false, false, true,
+                       false, false, false,
+                       false, false, false,
                        false, false, false]
 
-        imu0: imu/data
-        imu0_config: [false, false, false,
-                      false, false, false,
-                      false, false, false,
-                      false, false, true,
-                      false, false, false]
+ekf_filter_node_map:
+    ros__parameters:
+        frequency: 50.0
+        two_d_mode: true
+        publish_tf: true
+ 
+        map_frame: map             
+        odom_frame: odom            
+        base_link_frame: base_footprint 
+        world_frame: map
+
+        #x     , y     , z,
+        #roll  , pitch , yaw,
+        #vx    , vy    , vz,
+        #vroll , vpitch, vyaw,
+        #ax    , ay    , az
+        odom0: odometry/gps
+        odom0_config: [true,  true,  false,
+                       false, false, false,
+                       false, false, false,
+                       false, false, false,
+                       false, false, false]

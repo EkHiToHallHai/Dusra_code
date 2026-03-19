@@ -30,6 +30,8 @@ def generate_launch_description():
     gazebo_launch_path = PathJoinSubstitution(
         [FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py']
     )
+    
+
 
     ekf_config_path = PathJoinSubstitution(
         [FindPackageShare("linorobot2_base"), "config", "ekf.yaml"]
@@ -46,13 +48,13 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument(
-            name='gui', 
+            name='gui',
             default_value='true',
             description='Enable Gazebo Client'
         ),
-        
+
         DeclareLaunchArgument(
-            name='urdf', 
+            name='urdf',
             default_value=urdf_path,
             description='URDF path'
         ),
@@ -81,29 +83,29 @@ def generate_launch_description():
         ),
 
         DeclareLaunchArgument(
-            name='spawn_x', 
+            name='spawn_x',
             default_value='0.0',
             description='Robot spawn position in X axis'
         ),
 
         DeclareLaunchArgument(
-            name='spawn_y', 
+            name='spawn_y',
             default_value='0.0',
             description='Robot spawn position in Y axis'
         ),
 
         DeclareLaunchArgument(
-            name='spawn_z', 
+            name='spawn_z',
             default_value='0.0',
             description='Robot spawn position in Z axis'
         ),
-            
+
         DeclareLaunchArgument(
-            name='spawn_yaw', 
+            name='spawn_yaw',
             default_value='0.0',
             description='Robot spawn heading'
         ),
-        
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(gazebo_launch_path),
             launch_arguments={
@@ -124,8 +126,8 @@ def generate_launch_description():
             executable='create',
             output='screen',
             arguments=[
-                '-topic', 'robot_description', 
-                '-entity', 'linorobot2', 
+                '-topic', 'robot_description',
+                '-entity', 'linorobot2',
                 '-x', LaunchConfiguration('spawn_x'),
                 '-y', LaunchConfiguration('spawn_y'),
                 '-z', LaunchConfiguration('spawn_z'),
@@ -134,19 +136,20 @@ def generate_launch_description():
         ),
 
         Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
             arguments=[
-                "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-                "/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
-                "/odom/unfiltered@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-                "/imu/data@sensor_msgs/msg/Imu[gz.msgs.IMU",
-                "/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model",
-                "/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
-                "/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-                "/camera/image@sensor_msgs/msg/Image[gz.msgs.Image",
-                "/camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image",
-                "/camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+                '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+                '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+                '/odom/unfiltered@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+                '/imu/data@sensor_msgs/msg/Imu[gz.msgs.IMU',
+                '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',
+                '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+                '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/camera/image@sensor_msgs/msg/Image[gz.msgs.Image',
+                '/camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image',
+                '/camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+                '/gps/fix@sensor_msgs/msg/NavSatFix[gz.msgs.NavSat',
             ],
             remappings=[
                 ('/camera/camera_info', '/camera/color/camera_info'),
@@ -168,11 +171,31 @@ def generate_launch_description():
             name='ekf_filter_node',
             output='screen',
             parameters=[
-                {'use_sim_time': use_sim_time}, 
+                {'use_sim_time': use_sim_time},
                 ekf_config_path
             ],
-            remappings=[("odometry/filtered", LaunchConfiguration("odom_topic"))]
+            remappings=[('odometry/filtered', LaunchConfiguration('odom_topic'))]
         ),
+
+        
+
+        Node(
+            package='robot_localization',
+            executable='ekf_node',
+            name='ekf_filter_node_map',
+            output='screen',
+            parameters=[
+                {'use_sim_time': use_sim_time},
+                ekf_config_path
+            ],
+            remappings=[('odometry/filtered', '/odometry/global')]
+        ),
+        Node(
+    package='linorobot2_gazebo',
+    executable='gps_to_odom',
+    name='gps_to_odom',
+    output='screen',
+),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(description_launch_path),

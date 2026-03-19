@@ -1,0 +1,24 @@
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="gps">
+    <link name="gps_link"/>
+
+    <joint name="gps_to_base_link" type="fixed">
+      <parent link="base_link"/>
+      <child link="gps_link"/>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </joint>
+
+<gazebo>
+  <plugin filename="libgz-sim8-navsat-system.so" name="gz::sim::systems::NavSat">
+  </plugin>
+</gazebo>
+    <gazebo reference="gps_link">
+      <sensor name="gps_sensor" type="navsat">
+        <topic>gps/fix</topic>
+        <update_rate>10</update_rate>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

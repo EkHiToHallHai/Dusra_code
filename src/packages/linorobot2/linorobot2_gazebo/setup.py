@@ -32,6 +32,7 @@ setup(
             'image_to_gazebo = linorobot2_gazebo.image_to_gazebo:main',
             'map_to_gazebo = linorobot2_gazebo.map_to_gazebo:main',
             'create_worlds_from_maps = linorobot2_gazebo.create_worlds_from_maps:main',
+            'gps_to_odom = linorobot2_gazebo.gps_to_odom:main',
         ],
     },
 )
