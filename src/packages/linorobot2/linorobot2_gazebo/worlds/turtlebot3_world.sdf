@@ -51,6 +51,13 @@
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
     </light>
+        <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>37.412173071650805</latitude_deg>
+      <longitude_deg>-121.998878727967</longitude_deg>
+      <elevation>0</elevation>
+    </spherical_coordinates>
 
     <model name="ground_plane">
       <static>true</static>
