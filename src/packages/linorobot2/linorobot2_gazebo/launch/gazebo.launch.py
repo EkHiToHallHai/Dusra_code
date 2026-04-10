@@ -98,10 +98,12 @@ def generate_launch_description():
                 "/imu/data@sensor_msgs/msg/Imu[gz.msgs.IMU",
                 "/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model",
                 "/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+                '/rear_camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
+                '/rear_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             ],
             # Ensure your bridge remappings match your robot_description frames
             remappings=[
-                ('/camera/image', '/camera/color/image_raw'),
+                
             ]
         ),
 
