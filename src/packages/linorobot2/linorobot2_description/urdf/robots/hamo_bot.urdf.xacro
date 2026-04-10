@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<robot name="linorobot2_hamo_bot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ================= ARGS ================= -->
+  <xacro:arg name="sim" default="false" />
+
+  <!-- ================= INCLUDE PROPERTIES ================= -->
+  <xacro:include filename="$(find linorobot2_description)/urdf/hamo_bot_properties.urdf.xacro" />
+
+  <!-- ================= INCLUDE MECHANICS ================= -->
+  <xacro:include filename="$(find linorobot2_description)/urdf/mech/base.urdf.xacro" />
+  <xacro:include filename="$(find linorobot2_description)/urdf/mech/wheel.urdf.xacro" />
+  <xacro:include filename="$(find linorobot2_description)/urdf/mech/caster_wheel.urdf.xacro" />
+
+  <!-- ================= INCLUDE SENSORS ================= -->
+  <xacro:include filename="$(find linorobot2_description)/urdf/sensors/plugins.urdf.xacro" />
+  <xacro:include filename="$(find linorobot2_description)/urdf/sensors/imu.urdf.xacro" />
+  <xacro:include filename="$(find linorobot2_description)/urdf/sensors/gps.urdf.xacro" />
+  <xacro:include filename="$(find linorobot2_description)/urdf/sensors/generic_laser.urdf.xacro" />
+  <xacro:include filename="$(find linorobot2_description)/urdf/sensors/depth_sensor.urdf.xacro" />
+
+  <!-- ================= CONTROLLERS ================= -->
+  <xacro:include filename="$(find linorobot2_description)/urdf/controllers/diff_drive.urdf.xacro" />
+
+  <!-- ================= BASE ================= -->
+  <xacro:base 
+    length="${base_length}" 
+    width="${base_width}" 
+    height="${base_height}" 
+    mass="${base_mass}"
+    wheel_radius="${wheel_radius}"
+    wheel_pos_z="${wheel_pos_z}"
+    mesh_file="${base_mesh_file}"
+  />
+
+  <!-- ================= DRIVE WHEELS ================= -->
+  <!-- LEFT -->
+  <xacro:wheel 
+    side="left"
+    radius="${wheel_radius}" 
+    width="${wheel_width}" 
+    pos_x="${wheel_pos_x}" 
+    pos_y="${wheel_pos_y}" 
+    pos_z="${wheel_pos_z}" 
+    mass="${wheel_mass}"
+    mesh_file="${wheel_mesh_file}"
+  />
+
+  <!-- RIGHT -->
+  <xacro:wheel 
+    side="right"
+    radius="${wheel_radius}" 
+    width="${wheel_width}" 
+    pos_x="${wheel_pos_x}" 
+    pos_y="${-wheel_pos_y}" 
+    pos_z="${wheel_pos_z}" 
+    mass="${wheel_mass}"
+    mesh_file="${wheel_mesh_file}"
+  />
+<!-- ================= FRONT PASSIVE WHEELS ================= -->
+  <link name="front_left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.1764 0.4588 0.8509 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${(2/5)*wheel_mass*(wheel_radius*wheel_radius)}" ixy="0" ixz="0"
+               iyy="${(2/5)*wheel_mass*(wheel_radius*wheel_radius)}" iyz="0"
+               izz="${(2/5)*wheel_mass*(wheel_radius*wheel_radius)}"/>
+    </inertial>
+  </link>
+  <joint name="front_left_wheel_joint" type="continuous">
+    <axis xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="front_left_wheel_link"/>
+    <origin xyz="0.25 ${wheel_pos_y} ${wheel_pos_z}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="front_right_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.1764 0.4588 0.8509 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${(2/5)*wheel_mass*(wheel_radius*wheel_radius)}" ixy="0" ixz="0"
+               iyy="${(2/5)*wheel_mass*(wheel_radius*wheel_radius)}" iyz="0"
+               izz="${(2/5)*wheel_mass*(wheel_radius*wheel_radius)}"/>
+    </inertial>
+  </link>
+  <joint name="front_right_wheel_joint" type="continuous">
+    <axis xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="front_right_wheel_link"/>
+    <origin xyz="0.25 ${-wheel_pos_y} ${wheel_pos_z}" rpy="0 0 0"/>
+  </joint>
+  
+  <!-- ================= OPTIONAL CASTERS (DISABLED) ================= -->
+  <xacro:if value="${front_caster_wheel}">
+    <xacro:caster_wheel 
+      side="front"
+      mass="0.01"
+      base_length="${base_length}" 
+      wheel_radius="${wheel_radius}" 
+      wheel_pos_z="${wheel_pos_z}" 
+    />
+  </xacro:if>
+
+  <xacro:if value="${rear_caster_wheel}">
+    <xacro:caster_wheel 
+      side="rear"
+      mass="0.01"
+      base_length="${base_length}" 
+      wheel_radius="${wheel_radius}" 
+      wheel_pos_z="${wheel_pos_z}" 
+    />
+  </xacro:if>
+
+  <!-- ================= SENSORS ================= -->
+  <xacro:imu/>
+  <xacro:gps/>
+
+  <xacro:generic_laser>
+    <xacro:insert_block name="laser_pose" />
+  </xacro:generic_laser>
+  
+  <xacro:depth_sensor>
+    <xacro:insert_block name="depth_sensor_pose" />
+  </xacro:depth_sensor>
+
+  <!-- ================= CONTROLLER ================= -->
+  <xacro:diff_drive_controller
+    wheel_separation="${wheel_pos_y * 2}"
+    wheel_radius="${wheel_radius}"
+  />
+
+</robot>

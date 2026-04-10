@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- ================= BASE ================= -->
+  <xacro:property name="base_length" value="0.7" />
+  <xacro:property name="base_width"  value="0.5" />
+  <xacro:property name="base_height" value="0.5" />
+  <xacro:property name="base_mass"   value="20.0" />
+  <xacro:property name="base_mesh_file" value="" />
+
+  <!-- ================= WHEELS ================= -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_width"  value="0.05" />
+  <xacro:property name="wheel_mass"   value="0.5" />
+  <xacro:property name="wheel_torque" value="20" />
+
+  <!-- driven wheels at rear corners -->
+  <xacro:property name="wheel_pos_x" value="-0.25" />
+  <xacro:property name="wheel_pos_y" value="0.275" />
+  <!-- z from base_link centre so wheel bottom touches ground:           -->
+  <!-- base_link centre is at wheel_radius(0.1) above ground            -->
+  <!-- wheel centre must be at wheel_radius(0.1) above ground           -->
+  <!-- so wheel joint z relative to base_link = 0 (same height)        -->
+  <!-- but base_link centre is at base_height/2 above its bottom        -->
+  <!-- base bottom from ground = wheel_radius = 0.1                     -->
+  <!-- base_link centre from ground = 0.1 + 0.25 = 0.35... wait        -->
+  <!-- joint: base_footprint->base_link z = wheel_radius - wheel_pos_z  -->
+  <!-- we need base bottom at wheel_radius above ground                 -->
+  <!-- base_link centre from ground = wheel_radius + base_height/2      -->
+  <!--                              = 0.1 + 0.25 = 0.35                 -->
+  <!-- wheel centre from ground = wheel_radius = 0.1                    -->
+  <!-- wheel_pos_z (joint z from base_link) = 0.1 - 0.35 = -0.25       -->
+  <!-- base_footprint->base_link: z = wheel_radius - wheel_pos_z        -->
+  <!--                              = 0.1 - (-0.25) = 0.35 ✓           -->
+  <xacro:property name="wheel_pos_z" value="-0.25" />
+
+  <xacro:property name="front_caster_wheel" value="false" />
+  <xacro:property name="rear_caster_wheel"  value="false" />
+  <xacro:property name="wheel_mesh_file"    value="" />
+
+  <!-- ================= SENSORS ================= -->
+  <!-- base_link centre from ground = 0.35                              -->
+  <!-- base top from base_link centre = +0.25                           -->
+  <!-- laser z from base_link = 0.25 + 0.025 = 0.275                   -->
+  <xacro:property name="laser_pose">
+    <origin xyz="0 0 0.275" rpy="0 0 0"/>
+  </xacro:property>
+  <xacro:property name="depth_sensor_pose">
+    <origin xyz="0.35 0 0.0" rpy="0 0 0"/>
+  </xacro:property>
+</robot>
