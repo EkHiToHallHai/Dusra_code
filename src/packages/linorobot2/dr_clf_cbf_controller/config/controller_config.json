@@ -1,0 +1,16 @@
+{
+    "parameters": {
+        "wheel_offset": 0.275,
+        "cbf_rate": 1,
+        "clf_rate": 0.5,
+        "wasserstein_r": 0.004,
+        "epsilon": 0.1,
+        "noise_level": 0.01
+    },
+    "bot_params": {
+        "v_min": -3.0,
+        "v_max": 3.0,
+        "w_min": -2.0,
+        "w_max": 2.0
+    }
+}

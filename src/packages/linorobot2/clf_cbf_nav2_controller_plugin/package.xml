@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>clf_cbf_nav2_controller_plugin</name>
+  <version>0.1.0</version>
+  <description>CLF-CBF Nav2 controller plugin (C++ shim)</description>
+
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>nav2_core</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>pluginlib</depend>
+  <depend>tf2_ros</depend>
+
+  <!-- Depend on python package that provides the srv -->
+  <!-- <depend>dr_clf_cbf_controller</depend> -->
+  <depend>dr_clf_cbf_interfaces</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <nav2_core plugin="${prefix}/plugin_description.xml"/>
+  </export>
+</package>

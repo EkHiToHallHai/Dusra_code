@@ -1,0 +1,9 @@
+# Request
+geometry_msgs/PoseStamped current_pose
+nav_msgs/Path path
+---
+# Response
+geometry_msgs/Twist cmd_vel
+bool success
+string message
+bool goal_reached

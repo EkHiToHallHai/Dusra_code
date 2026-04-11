@@ -1,0 +1,10 @@
+// # linear velocity penalty
+// self.p1 = p1
+// # angular velocity penalty
+// self.p2 = p2
+// # CLF penalty (for CLF-CBF-QP)
+// self.p3 = p3
+// # CLF decay rate
+// self.rateV = clf_rate
+// # CBF decay rate
+// self.rateh = cbf_rate
