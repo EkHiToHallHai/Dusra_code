@@ -121,3 +121,11 @@ ros2 launch linorobot2_gazebo gazebo.launch.py   world_name:=baylands_world   sp
 gz service -s /world/baylands/create   --reqtype gz.msgs.EntityFactory   --reptype gz.msgs.Boolean   --timeout 5000   --req "sdf_filename: \"$HOME/ros_ws/src/packages/linorobot2/linorobot2_gazebo/models/aruco_marker_0/model.sdf\", name: \"aruco_marker_0\", pose: {position: {x: -2.0, y: 0.0, z: 0.0}}"
 
 ros2 launch aruco_docking aruco_dock.launch.py aruco_dict:=DICT_5X5_50
+
+------------------------
+#### Controller
+
+python3 -m pip install "numpy<2.0" --break-system-packages
+python3 -m pip install "scipy<1.14" --break-system-packages
+python3 -m pip install "cvxpy<1.4" --break-system-packages
+python3 -m pip install osqp ecos scs --break-system-packages
